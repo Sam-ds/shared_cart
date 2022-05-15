@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% load cart %}
+{% load custom_filter %}
+<div class="container">
+    <div >
+        <br>
+        <form action="{% url 'cart' %}" >
+         {% csrf_token %}
+           <input type="text" align="right" name ="shared_cart_id" >
+            <input type="submit" class="btn  btn-outline-success rounded-pill col-lg-2" value="Import cart">
+        </form>
+
+</br>
+    </div>
+   <div class="border rounded p-4 m-4">
+        <p class="display-4 pl-4 ml-4 btn btn-success rounded-pill">Your Cart</p>
+
+           <hr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sno.</th>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                {% for product in products %}
+                     <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td><img style="height: 80px;" class="square-box" src="image/download/{{product.image}}" alt=""/></td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.price|currency}}</td>
+                    <td>{{product|cart_quantity:request.session.cart}}</td>
+                    <td>{{product|price_total:request.session.cart|currency}}</td>
+                </tr>
+
+                {% endfor %}
+               
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <th colspan="4"></th>
+                    <th class="" colspan="">Total</th>
+                    <th>{{products|total_cart_price:request.session.cart|currency}}</th>
+                </tr>
+            </tfoot>
+        </table>
+        <hr>
+      <div class="m-3 p-3" >
+            <a href="#" data-toggle="modal" data-target="#exampleModal2" class="btn btn-outline-success border rounded  col-lg-3 float-right">Share my cart</a>
+          </div>
+       <div class="m-3 p-3" >
+            <a href="#" data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-success border rounded  col-lg-3 float-right">Check out</a>
+          </div>
+   </div>
+</div>
+
+
+<!-- modal -->
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+              Check Out Form
+          </h5>
+          <hr>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="m-2 p-3">
+            <form action="/check-out" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="">Address</label>
+                  <input type="text" name="address" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                  
+                </div>
+                <div class="form-group">
+                    <label for="">Phone</label>
+                    <input type="text" name="phone" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                  </div>
+                <div class="form-group">
+                    <label for="">Pincode</label>
+                    <input type="text" name="phone" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                  </div>
+
+                  <input type="submit" class="btn float-right btn-outline-success col-lg-6" value="Check out">
+            </form>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+        </div>
+        <div class="modal-body">
+          <div class="m-2 p-3">
+            <form action="/shared-cart" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  please click share below to share your cart.
+                    Add address and phone number if you want items you ordered to get it delivered
+                    at your address.
+
+                </div>
+                 <div class="form-group">
+                  <label for="">Address</label>
+                  <input type="text" name="address" id="" class="form-control" placeholder="" aria-describedby="helpId">
+
+                </div>
+                <div class="form-group">
+                    <label for="">Phone</label>
+                    <input type="text" name="phone" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                  </div>
+                <div class="form-group">
+                    <label for="">Pincode</label>
+                    <input type="text" name="phone" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                  </div>
+
+                <input type="submit" class="btn float-right btn-outline-success col-lg-6" value="share">
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+<div class="container">
+   <div class="border rounded p-4 m-4">
+        <p class="display-4 pl-4 ml-4 btn btn-success rounded-pill">Items in your shared Cart</p>
+        <hr>
+       {% if shared_cart_id == "empty" %}
+          your have no shared carts at the moment.
+
+       {% else %}
+
+       your shared cart id : <td><b>{{shared_cart_id}}</b></td>
+       <br>you can share this id with someone to shop together.</br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sno.</th>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for shared_item in shared_cart_items %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td><img style="height: 80px;" class="square-box" src="image/download/{{shared_item.image}}" alt=""/></td>
+                    <td>{{shared_item.product}}</td>
+                    <td>{{shared_item.price|currency}}</td>
+                    <td>{{shared_item.quantity}}</td>
+                    <td>{{shared_item.quantity|multiply:shared_item.price|currency}}</td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <th colspan="4"></th>
+                    <th class="" colspan="">Total</th>
+                    <th>{{shared_cart_items_total|currency}}</th>
+                </tr>
+            </tfoot>
+            {% endif %}
+        </table>
+        <hr>
+   </div>
+</div>
+
+{% endblock %}
