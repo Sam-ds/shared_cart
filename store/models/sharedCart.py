@@ -15,6 +15,9 @@ class shared_cart(models.Model):
     phone = models.CharField(max_length=50, default='', blank=True)
     pincode = models.CharField(max_length=10, default='', blank=True)
     product_id=models.IntegerField()
+    ordered_by=models.CharField(max_length=50, default='',blank=False)
+    checkout_done=models.IntegerField()
+    scart_name=models.CharField()
 
     def placeOrderShared(self):
         self.save()
@@ -22,6 +25,10 @@ class shared_cart(models.Model):
     @staticmethod
     def get_orders_by_customer(customer_id):
         return shared_cart.objects.filter(customer_id=customer_id)
+
+    @staticmethod
+    def get_orders_by_checkout_done(customer_id,checkout_done):
+        return shared_cart.objects.filter(customer_id=customer_id,checkout_done=checkout_done)
 
     @staticmethod
     def get_orders_by_cartid(shared_cart_id):
