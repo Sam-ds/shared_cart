@@ -8,14 +8,12 @@ from ..models.sharedCart import shared_cart
 
 class SCheckout(View):
     def get(self, request):
-        ids = list(request.session.get('cart').keys())
         customer = request.session.get('customer')
         shared_cart_items = shared_cart.get_orders_by_customer(customer)
         print(shared_cart_items)
         products = shared_cart.get_orders_by_cartid(request.GET.get('shared_cart_id'))
         for product in products:
             print(product.product_id)
-
 
         print("***")
         print(request.GET.get('shared_cart_id'))
@@ -27,8 +25,7 @@ class SCheckout(View):
         else:
             shared_cart_id = "empty"
         print(shared_cart_id)
-        return render(request, 'cart.html', {'products': products,
-                                             'shared_cart_items': shared_cart_items,
-                                             'shared_cart_items_total': shared_cart_items_total.get('result'),
-                                             'shared_cart_id': shared_cart_id,
-                                             'schekout': 1})
+        return render(request, 'gcart.html', {
+            'shared_cart_items': shared_cart_items,
+            'shared_cart_items_total': shared_cart_items_total.get('result'),
+            'shared_cart_id': shared_cart_id})

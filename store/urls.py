@@ -1,5 +1,8 @@
 from django.contrib import admin
 from django.urls import path
+
+from .views.gcheckout import gcheckout
+from .views.gcart import gcart
 from .views.home import Index, store
 from .views.signup import Signup
 from .views.login import Login, logout
@@ -7,7 +10,7 @@ from .views.cart import Cart
 from .views.checkout import CheckOut
 from .views.sharedCart import SharedCart
 from .views.orders import OrderView
-from .views.SCheckout import SCheckout
+from .views.scheckout import SCheckout
 from .middlewares.auth import auth_middleware
 
 urlpatterns = [
@@ -17,9 +20,11 @@ urlpatterns = [
     path('login', Login.as_view(), name='login'),
     path('logout', logout, name='logout'),
     path('cart', auth_middleware(Cart.as_view()), name='cart'),
+    path('gcart', auth_middleware(gcart.as_view()), name='gcart'),
     path('shared-cart', SharedCart.as_view(), name='sharedCart'),
     path('check-out', CheckOut.as_view(), name='checkout'),
-    path('scheckout', (SCheckout.as_view()), name='scheckout'),
+    path('scheckout', SCheckout.as_view(), name='scheckout'),
     path('orders', auth_middleware(OrderView.as_view()), name='orders'),
+    path('gcheckout', auth_middleware(gcheckout.as_view()), name='gcheckout'),
 
 ]

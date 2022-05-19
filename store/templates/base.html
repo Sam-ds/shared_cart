@@ -9,7 +9,7 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <title>shared cart </title>
 
   <style>
@@ -38,7 +38,7 @@
     <a class="navbar-brand ms-3 text-dark " href="/">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 
-    <img src="https://www.freepnglogos.com/uploads/shopping-cart-png/shopping-cart-svg-png-icon-download-28.png" style="width:50px;height:50px,color:text-light;">Shared cart</a>
+    <img src="" style="width:50px;height:50px,color:text-light;"><i class="material-icons">store</i></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -58,14 +58,19 @@
 
       <ul class=" navbar-nav my-2 my-lg-0">
 
+         <li class="nav-item active ">
+          <a class="nav-link" href="/gcart">
+            <i class="material-icons">group</i>
+            <span class="sr-only">(current)</span></a>
+        </li>
         <li class="nav-item active">
-          <a class="nav-link" href="/cart">Cart 
+          <a class="nav-link" href="/cart">Cart
             <span class="badge badge-success">{{request.session.cart.keys|length}}</span>
             <span class="sr-only">(current)</span></a>
         </li>
 
         {% if request.session.customer %}
-        
+
         <li class="nav-item active ">
           <a class="nav-link" href="/orders">Orders<span class="sr-only">(current)</span></a>
         </li>

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% load cart %}
+{% load custom_filter %}
+<div class="container">
+
+<div class="container">
+   <div class="border rounded p-4 m-4">
+        <p class="display-4 pl-4 ml-4 btn btn-success rounded-pill">Items in your shared Cart</p>
+        <hr>
+       {% if shared_cart_available == "empty" %}
+          your have no shared carts at the moment.
+
+       {% else %}
+
+
+{% for key in shared_cart_items_dict.keys %}
+       your shared cart id : <b>{{key}}</b>
+       <br>you can share this id with someone to shop together.</br>
+       <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sno.</th>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>added by </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for shared_item in shared_cart_items_dict|get_item:key %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td><img style="height: 80px;" class="square-box" src="image/download/{{shared_item.image}}" alt=""/></td>
+                    <td>{{shared_item.product}}</td>
+                    <td>{{shared_item.price|currency}}</td>
+                    <td>{{shared_item.quantity}}</td>
+                    <td>{{shared_item.quantity|multiply:shared_item.price|currency}}</td>
+                    <td>{{shared_item.ordered_by}}</td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <th colspan="4"></th>
+                    <th class="" colspan="">Total</th>
+                    <th>{{shared_cart_items_total|currency}}</th>
+                </tr>
+            </tfoot>
+
+
+        </table>
+            {% endfor %}
+            {% endif %}
+
+
+<div class="container">
+    <div >
+        <br>
+        <form action="{% url 'gcheckout' %}" method="post" >
+         {% csrf_token %}
+           <input type="text" align="right" placeholder=" enter cart code here" name ="group_cart_id" >
+            <input type="submit" class="btn  btn-outline-success rounded-pill col-lg-2" value="checkout cart">
+        </form>
+
+</br>
+    </div>
+        <hr>
+   </div>
+
+</div>
+</div>
+</div>
+
+
+
+{% endblock %}

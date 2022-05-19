@@ -48,6 +48,48 @@
    </div>
 </div>
 
+<div class="container">
+   <div class="border rounded p-4 m-4">
+        <p class="display-4 pl-4 ml-4">Your Orders from shared cart </p>
+        <hr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sno.</th>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>added by </th>
+                    <th>From shared cart</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for shared_item in shared_cart_items %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td><img style="height: 80px;" class="square-box" src="image/download/{{shared_item.image}}" alt=""/></td>
+                    <td>{{shared_item.product}}</td>
+                    <td>{{shared_item.price|currency}}</td>
+                    <td>{{shared_item.quantity}}</td>
+                    <td>{{shared_item.quantity|multiply:shared_item.price|currency}}</td>
+                    <td>{{shared_item.ordered_by}}</td>
+                    <td>{{shared_item.shared_cart_id}}</td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+
+        </table>
+
+   </div>
+</div>
+
+
 
 
 
